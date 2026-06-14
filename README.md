@@ -73,6 +73,10 @@ pio run --target upload
 pio device monitor
 ```
 
-## Photos / Video
+## Photos 
 
-[![Watch the video](PhotosVideos/ESP32_1.png)](https://github.com/ehellyer/esp32_relayboard/blob/master/PhotosVideos/SequenceRelays.mp4)
+![](PhotosVideos/ESP32_1.png) ![](PhotosVideos/ESP32_2.png)
+
+![](PhotosVideos/ESP32_3.png) ![](PhotosVideos/ESP32_4.png)
+
+![](PhotosVideos/ESP32-Pinout.png)
