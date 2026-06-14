@@ -8,7 +8,11 @@ static constexpr uint8_t LED_PIN = 2;        // On-board LED (GPIO2)
 // ── Constant Definitions ──────────────────────────────────────────────────────────
 static constexpr uint32_t STATUS_LED_INTERVAL_MS = 500; 
 static constexpr uint32_t RELAY_INTERVAL_MS = 100;
-static constexpr uint8_t RELAY_PINS[] = {13, 32, 14, 27, 26, 25}; // GPIO pins connected to the relays (adjust as needed)
+// Safe output GPIOs on the DOIT ESP32 DevKit V1 (38-pin).
+// Avoided: 0 (boot), 1/3 (UART0), 2 (LED), 6-11 (flash SPI), 12 (flash voltage strapping),
+//          34/35/36/39 (input-only), 5 (strapping — goes LOW at boot, would briefly pulse relay).
+// GPIO 15 is a strapping pin but must be HIGH at boot, matching the active-low relay OFF state.
+static constexpr uint8_t RELAY_PINS[] = {4, 13, 14, 15, 16, 17, 18, 19, 21, 22, 23, 25, 26, 27, 32, 33};
 
 
 // ── Setup ────────────────────────────────────────────────────────────────
