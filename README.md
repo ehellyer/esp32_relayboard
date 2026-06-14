@@ -75,4 +75,6 @@ pio device monitor
 
 ## Photos / Video
 
-See [PhotosVideos/](PhotosVideos/) for reference images of the wiring and a short clip of the relay sequence in action.
+![ESP32 dev board](PhotosVideos/ESP32_1.png)
+
+<video src="PhotosVideos/SequenceRelays.mov" controls width="100%"></video>
