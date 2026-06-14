@@ -75,6 +75,4 @@ pio device monitor
 
 ## Photos / Video
 
-![ESP32 dev board](PhotosVideos/ESP32_1.png)
-
-<video src="PhotosVideos/SequenceRelays.mov" controls width="100%"></video>
+[![Watch the video](PhotosVideos/ESP32_1.png)](https://github.com/ehellyer/esp32_relayboard/blob/master/PhotosVideos/SequenceRelays.mov)
