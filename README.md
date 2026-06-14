@@ -75,4 +75,4 @@ pio device monitor
 
 ## Photos / Video
 
-[![Watch the video](PhotosVideos/ESP32_1.png)](https://github.com/ehellyer/esp32_relayboard/blob/master/PhotosVideos/SequenceRelays.mov)
+[![Watch the video](PhotosVideos/ESP32_1.png)](https://github.com/ehellyer/esp32_relayboard/blob/master/PhotosVideos/SequenceRelays.mp4)
