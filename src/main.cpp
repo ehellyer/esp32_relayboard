@@ -1,9 +1,7 @@
 #include <Arduino.h>
 #include <WiFi.h>
+#include "../.credentials/wifi_credentials.h"
 #include <ArduinoOTA.h>
-
-const char* ssid = "evosis";
-const char* password = "bianca799";
 
 // ── Pin Definitions ──────────────────────────────────────────────────────────
 static constexpr uint8_t LED_PIN = 2;        // On-board LED (GPIO2)
@@ -33,7 +31,7 @@ void setup() {
     delay(200);
 
     WiFi.mode(WIFI_STA);
-    WiFi.begin(ssid, password);
+    WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
   
     while (WiFi.waitForConnectResult() != WL_CONNECTED) {
         Serial.println(F("Connection Failed! Rebooting..."));
