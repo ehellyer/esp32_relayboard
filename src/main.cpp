@@ -2,14 +2,17 @@
 #include <WiFi.h>
 #include "../.credentials/wifi_credentials.h"
 #include <ArduinoOTA.h>
+#include "DuaLogger.h"
+
+static DuaLogger logger;
 
 // ── Pin Definitions ──────────────────────────────────────────────────────────
 static constexpr uint8_t LED_PIN = 2;        // On-board LED (GPIO2)
 
 
 // ── Constant Definitions ──────────────────────────────────────────────────────────
-static constexpr uint32_t STATUS_LED_INTERVAL_MS = 500; 
-static constexpr uint32_t RELAY_INTERVAL_MS = 2000;
+static constexpr uint32_t STATUS_LED_INTERVAL_MS = 500;
+static constexpr uint32_t RELAY_INTERVAL_MS = 1000;
 // Safe output GPIOs on the DOIT ESP32 DevKit V1 (38-pin).
 // Avoided: 0 (boot), 1/3 (UART0), 2 (LED), 6-11 (flash SPI), 12 (flash voltage strapping),
 //          34/35/36/39 (input-only), 5 (strapping — goes LOW at boot, would briefly pulse relay).
@@ -32,9 +35,9 @@ void setup() {
 
     WiFi.mode(WIFI_STA);
     WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
-  
+
     while (WiFi.waitForConnectResult() != WL_CONNECTED) {
-        Serial.println(F("Connection Failed! Rebooting..."));
+        logger.println(F("Connection Failed! Rebooting..."));
         delay(5000);
         ESP.restart();
     }
@@ -44,30 +47,31 @@ void setup() {
     ArduinoOTA.setHostname("esp32_relayboard"); // Friendly network name
 
     ArduinoOTA.onStart([]() {
-    String type = (ArduinoOTA.getCommand() == U_FLASH) ? "sketch" : "filesystem";
-        Serial.println("Start updating " + type) ;
+        String type = (ArduinoOTA.getCommand() == U_FLASH) ? "sketch" : "filesystem";
+        logger.println("Start updating " + type);
     });
     ArduinoOTA.onEnd([]() {
-        Serial.println(F("\nEnd"));
+        logger.println(F("\nEnd"));
     });
     ArduinoOTA.onProgress([](unsigned int progress, unsigned int total) {
-        Serial.printf("Progress: %u%%\r", (progress / (total / 100)));
+        logger.printf("Progress: %u%%\r", (progress / (total / 100)));
     });
     ArduinoOTA.onError([](ota_error_t error) {
-    Serial.printf("Error[%u]: ", error);
-    if (error == OTA_AUTH_ERROR) Serial.println("Auth Failed");
-    else if (error == OTA_BEGIN_ERROR) Serial.println("Begin Failed");
-    else if (error == OTA_CONNECT_ERROR) Serial.println("Connect Failed");
-    else if (error == OTA_RECEIVE_ERROR) Serial.println("Receive Failed");
-    else if (error == OTA_END_ERROR) Serial.println("End Failed");
+        logger.printf("Error[%u]: ", error);
+        if (error == OTA_AUTH_ERROR)         logger.println("Auth Failed");
+        else if (error == OTA_BEGIN_ERROR)   logger.println("Begin Failed");
+        else if (error == OTA_CONNECT_ERROR) logger.println("Connect Failed");
+        else if (error == OTA_RECEIVE_ERROR) logger.println("Receive Failed");
+        else if (error == OTA_END_ERROR)     logger.println("End Failed");
     });
 
     ArduinoOTA.begin();
-    Serial.println("\n\nOTA Ready");
-    Serial.print("IP address: ");
-    Serial.println(WiFi.localIP());
+    logger.begin();
 
-    Serial.println(F("\n\n=== ESP32 Relay Controller ==="));
+    logger.println("\n\nOTA Ready");
+    logger.print("IP address: ");
+    logger.println(WiFi.localIP());
+    logger.println(F("\n\n=== ESP32 Relay Controller ==="));
 }
 
 
@@ -96,6 +100,7 @@ void loop() {
         lastRelayms = now;
 
         digitalWrite(RELAY_PINS[currentRelayIndex], LOW);
+        logger.printf("Activated relay %i on GPIO %i\n", (currentRelayIndex + 1), RELAY_PINS[currentRelayIndex]);
         if (prevRelayIndex != currentRelayIndex) {
             digitalWrite(RELAY_PINS[prevRelayIndex], HIGH);
         }
